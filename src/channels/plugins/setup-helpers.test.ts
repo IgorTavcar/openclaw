@@ -199,6 +199,44 @@ describe("moveSingleAccountChannelSectionToDefaultAccount", () => {
     expect(next.channels?.matrix?.userId).toBeUndefined();
     expect(next.channels?.matrix?.accessToken).toBeUndefined();
   });
+
+  it("promotes legacy Matrix keys into an existing non-canonical default account key", () => {
+    const next = moveSingleAccountChannelSectionToDefaultAccount({
+      cfg: asConfig({
+        channels: {
+          matrix: {
+            defaultAccount: "ops",
+            homeserver: "https://matrix.example.org",
+            userId: "@ops:example.org",
+            accessToken: "token",
+            accounts: {
+              Ops: {
+                enabled: true,
+              },
+            },
+          },
+        },
+      }),
+      channelKey: "matrix",
+    });
+
+    expect(next.channels?.matrix).toMatchObject({
+      defaultAccount: "ops",
+      accounts: {
+        Ops: {
+          enabled: true,
+          homeserver: "https://matrix.example.org",
+          userId: "@ops:example.org",
+          accessToken: "token",
+        },
+      },
+    });
+    expect(next.channels?.matrix?.accounts?.ops).toBeUndefined();
+    expect(next.channels?.matrix?.accounts?.default).toBeUndefined();
+    expect(next.channels?.matrix?.homeserver).toBeUndefined();
+    expect(next.channels?.matrix?.userId).toBeUndefined();
+    expect(next.channels?.matrix?.accessToken).toBeUndefined();
+  });
 });
 
 describe("createEnvPatchedAccountSetupAdapter", () => {

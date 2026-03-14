@@ -453,12 +453,17 @@ export function resolveSingleAccountPromotionTarget(params: {
       ? normalizeAccountId(params.channel.defaultAccount)
       : undefined;
   if (normalizedDefaultAccount) {
-    if (
-      normalizedDefaultAccount !== DEFAULT_ACCOUNT_ID &&
-      accounts[normalizedDefaultAccount] &&
-      typeof accounts[normalizedDefaultAccount] === "object"
-    ) {
-      return normalizedDefaultAccount;
+    if (normalizedDefaultAccount !== DEFAULT_ACCOUNT_ID) {
+      const matchedAccountId = Object.entries(accounts).find(
+        ([accountId, value]) =>
+          accountId &&
+          value &&
+          typeof value === "object" &&
+          normalizeAccountId(accountId) === normalizedDefaultAccount,
+      )?.[0];
+      if (matchedAccountId) {
+        return matchedAccountId;
+      }
     }
     return DEFAULT_ACCOUNT_ID;
   }

@@ -69,7 +69,12 @@ async function resolveRuntimeMatrixClient(opts: {
     accountId: authContext.accountId,
     startClient: false,
   });
-  await opts.onResolved?.(client, { preparedByDefault: true });
+  try {
+    await opts.onResolved?.(client, { preparedByDefault: true });
+  } catch (err) {
+    await releaseSharedClientInstance(client, "stop");
+    throw err;
+  }
   return {
     client,
     stopOnDone: true,
