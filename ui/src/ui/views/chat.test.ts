@@ -527,8 +527,9 @@ describe("chat view", () => {
     expect(container.textContent).not.toContain("New session");
   });
 
-  it("keeps stop visible when a run is active but stream is temporarily idle", () => {
+  it("keeps send available to queue while a run is active but stream is temporarily idle", () => {
     const container = document.createElement("div");
+    const onSend = vi.fn();
     render(
       renderChat(
         createProps({
@@ -536,13 +537,18 @@ describe("chat view", () => {
           sending: false,
           stream: null,
           onAbort: () => undefined,
+          onSend,
         }),
       ),
       container,
     );
 
     const stopButton = container.querySelector<HTMLButtonElement>('button[title="Stop"]');
-    expect(stopButton).not.toBeNull();
+    expect(stopButton).toBeNull();
+    const queueButton = container.querySelector<HTMLButtonElement>('button[title="Queue"]');
+    expect(queueButton).not.toBeNull();
+    queueButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(onSend).toHaveBeenCalledTimes(1);
     expect(container.textContent).not.toContain("New session");
   });
 
