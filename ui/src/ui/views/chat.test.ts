@@ -527,6 +527,25 @@ describe("chat view", () => {
     expect(container.textContent).not.toContain("New session");
   });
 
+  it("keeps stop visible when a run is active but stream is temporarily idle", () => {
+    const container = document.createElement("div");
+    render(
+      renderChat(
+        createProps({
+          canAbort: true,
+          sending: false,
+          stream: null,
+          onAbort: () => undefined,
+        }),
+      ),
+      container,
+    );
+
+    const stopButton = container.querySelector<HTMLButtonElement>('button[title="Stop"]');
+    expect(stopButton).not.toBeNull();
+    expect(container.textContent).not.toContain("New session");
+  });
+
   it("shows a new session button when aborting is unavailable", () => {
     const container = document.createElement("div");
     const onNewSession = vi.fn();
