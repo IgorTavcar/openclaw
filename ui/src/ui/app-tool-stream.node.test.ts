@@ -139,4 +139,27 @@ describe("app-tool-stream fallback lifecycle handling", () => {
     expect(host.fallbackStatus?.previous).toBe("deepinfra/moonshotai/Kimi-K2.5");
     vi.useRealTimers();
   });
+
+  it("preserves chatRunId while processing tool events", () => {
+    const host = createHost({
+      chatRunId: "run-123",
+    });
+
+    handleAgentEvent(host, {
+      runId: "engine-run-1",
+      seq: 1,
+      stream: "tool",
+      ts: Date.now(),
+      sessionKey: "main",
+      data: {
+        phase: "start",
+        toolCallId: "tool-1",
+        name: "search",
+        args: { q: "openclaw" },
+      },
+    });
+
+    expect(host.chatRunId).toBe("run-123");
+    expect(host.toolStreamOrder).toEqual(["tool-1"]);
+  });
 });

@@ -393,6 +393,9 @@ export function handleAgentEvent(host: ToolStreamHost, payload?: AgentEventPaylo
   if (!payload) {
     return;
   }
+  // Preserve active chat run identity across tool-stream state updates.
+  // Tool events should never clear abort state on their own.
+  const preservedChatRunId = host.chatRunId;
 
   // Handle compaction events
   if (payload.stream === "compaction") {
@@ -469,4 +472,5 @@ export function handleAgentEvent(host: ToolStreamHost, payload?: AgentEventPaylo
   entry.message = buildToolStreamMessage(entry);
   trimToolStream(host);
   scheduleToolStreamSync(host, phase === "result");
+  host.chatRunId = preservedChatRunId;
 }
