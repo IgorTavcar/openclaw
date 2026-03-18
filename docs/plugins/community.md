@@ -45,6 +45,11 @@ Use this format when adding entries:
 
 ## Listed plugins
 
+- **NovaAdapt** — Curated NovaAdapt planning and orchestration tools for OpenClaw with guarded approvals and service-status surfaces.
+  npm: `novaspine-openclaw-adapt`
+  repo: `https://github.com/maddwiz/Novaspine-Openclaw`
+  install: `openclaw plugins install novaspine-openclaw-adapt`
+
 - **WeChat** — Connect OpenClaw to WeChat personal accounts via WeChatPadPro (iPad protocol). Supports text, image, and file exchange with keyword-triggered conversations.
   npm: `@icesword760/openclaw-wechat`
   repo: `https://github.com/icesword0760/openclaw-wechat`
