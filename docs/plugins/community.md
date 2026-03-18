@@ -45,7 +45,7 @@ Use this format when adding entries:
 
 ## Listed plugins
 
-- **NovaAdapt** — Curated NovaAdapt planning and orchestration tools for OpenClaw with guarded approvals and service-status surfaces.
+- **NemoSidecar** — Tiered NovaAdapt sidecar for OpenClaw with guarded planning in Core, browser and memory routes in Pro, and deeper operator surfaces at the top tier.
   npm: `novaspine-openclaw-adapt`
   repo: `https://github.com/maddwiz/Novaspine-Openclaw`
   install: `openclaw plugins install novaspine-openclaw-adapt`
